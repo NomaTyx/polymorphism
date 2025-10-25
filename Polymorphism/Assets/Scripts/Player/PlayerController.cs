@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,14 +16,21 @@ namespace CharacterMovement
         // make character look in Camera direction instead of MoveDirection
         [field: SerializeField] protected bool LookInCameraDirection { get; set; }
 
-        [field: Header("Componenentssss")]
+        [field: Header("Componenents")]
         [field: SerializeField] protected CharacterMovementBase Movement { get; set; }
+
+        [SerializeField] private Attack _playerAttack;
 
         protected Vector2 MoveInput { get; set; }
 
+        void Start()
+        {
+            _playerAttack = GetComponentInChildren<Attack>();
+        }
+
         protected virtual void OnValidate()
         {
-            if(Movement == null) Movement = GetComponent<CharacterMovementBase>();
+            if (Movement == null) Movement = GetComponent<CharacterMovementBase>();
         }
 
         protected virtual void Awake()
@@ -41,7 +50,7 @@ namespace CharacterMovement
 
         public virtual void OnAttack(InputValue value)
         {
-            Debug.Log("hi");
+            _playerAttack.DoAttack();
         }
 
         protected virtual void Update()
